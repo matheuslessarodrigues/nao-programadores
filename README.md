@@ -2,7 +2,9 @@ O básico que permitirá você fazer uns scripts simples sem depender do program
 
 # Setup
 
-Esse guia focará num ambiente [Unity](https://unity.com/) (tenha ao menos uma versão instalada). Por conta disso, nós iremos programar em [C#](https://en.wikipedia.org/wiki/C_Sharp_%28programming_language%29) e, pra isso, recomendo o editor de código [VS Code](https://code.visualstudio.com/).
+Esse guia focará num ambiente [Unity](https://unity.com/) (tenha ao menos uma versão instalada).
+Por conta disso, nós iremos programar em [C#](https://en.wikipedia.org/wiki/C_Sharp_%28programming_language%29) e,
+pra isso, recomendo o editor de código [VS Code](https://code.visualstudio.com/).
 
 ## VS Code
 É recomendado instalar a extensão de C#. Após abrir o vscode:
@@ -22,4 +24,21 @@ Caso não exista essa opção, instale o pacote de suporte do vscode:
 - na busca digite `code`
 - instale o pacote 'Visual Studio Code Editor'
 
+# Primeiro Script
+Na Unity, procure ou crie uma pasta 'Scripts' e lá crie um script C#.
 
+[create-script](images/create-script.png)
+
+
+----
+criar script Unity
+Start()
+execução sequencial
+print => Debug.Log()
+variaveis => guardar valores pra mais tarde
+- rapido devaneio sobre tipos?
+fluxo
+Update()
+if input => Input.GetKeyDown()
+variaveis publicas => inspector
+docs Unity
