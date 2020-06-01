@@ -1,37 +1,25 @@
-## Welcome to GitHub Pages
+O básico que permitirá você fazer uns scripts simples sem depender do programador pé-no-saco.
 
-You can use the [editor on GitHub](https://github.com/matheuslessarodrigues/nao-programadores/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+# Setup
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Esse guia focará num ambiente [Unity](https://unity.com/) (tenha ao menos uma versão instalada). Por conta disso, nós iremos programar em [C#](https://en.wikipedia.org/wiki/C_Sharp_%28programming_language%29) e, pra isso, recomendo o editor de código [VS Code](https://code.visualstudio.com/).
 
-### Markdown
+## VS Code
+É recomendado instalar a extensão de C#. Após abrir o vscode:
+- `ctrl+shift+x`
+- procure por 'C#'
+- instale clicando no botão verde 'install'
+- (você pode fechar a sidebar com `ctrl+b`)
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+## Unity
+Configure o vscode como editor de código padrão da unity:
+- `Edit` > `Preferences...` > `External Tools`
+- mude `External Script Editor` para `Visual Studio Code`
 
-```markdown
-Syntax highlighted code block
+Caso não exista essa opção, instale o pacote de suporte do vscode:
+- `Window` > `Package Manager`
+- no dropdown superior esquerdo, selecione `All Packages`
+- na busca digite `code`
+- instale o pacote 'Visual Studio Code Editor'
 
-# Header 1
-## Header 2
-### Header 3
 
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/matheuslessarodrigues/nao-programadores/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
