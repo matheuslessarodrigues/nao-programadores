@@ -129,18 +129,23 @@ reparar que na hora de executar, ele ignora o valor inicial escrito no código e
 // código omitido
 private void Start()
 {
-	int meuNumero = 10 + 2; // variáveis podem ser criadas a partir de expressões
+	// variáveis podem ser criadas a partir de expressões
+	int meuNumero = 10 + 2;
 	Debug.Log(meuNumero); // 12
 
-	float metade = meuNumero * 0.5f; // se misturar float com int, o int é convertido pra float (cuidado!)
-									 // o 'f' em '0.5f' serve pra indicar que esse literal é um número float
+	// pode misturar int e float
+	// porem, nesse caso, o int é convertido pra float (cuidado!)
+	// o 'f' em '0.5f' serve pra indicar que esse literal é um número float
+	float metade = meuNumero * 0.5f;
 	Debug.Log(metade); // 6.0
 
-	bool numeroEhGrande = meuNumero > 10; // 'true' caso meuNumero seja maior que 10, 'false' caso contrário
+	// 'true' se meuNumero for maior que 10, 'false' caso contrário
+	bool numeroEhGrande = meuNumero > 10;
 	Debug.Log(numeroEhGrande); // true
 
-	Vector3 position = new Vector3(0.0f, meuNumero, metade + 4.0f); // um dos tipos que existem na Unity,
-																	// representa um ponto no espaço 3d
+	// um dos tipos que existem na Unity
+	// representa um ponto no espaço 3d
+	Vector3 position = new Vector3(0.0f, meuNumero, metade + 4.0f);
 	Debug.Log(position); // Vector3(0.0, 12.0, 10.0)
 }
 ```
@@ -162,14 +167,15 @@ sintaxe. Todas diferentes, porém semelhantes o suficiente para que possamos apl
 
 Exemplos de C#:
 ```
-public class MeuScript : MonoBehaviour // cria uma classe (mais detalhes adiante)
-									   // ': MonoBehaviour' significa que esse script é
-									   // também um componente da Unity
+// cria uma classe (mais detalhes adiante)
+// ': MonoBehaviour' significa que esse script é também um componente da Unity
+public class MeuScript : MonoBehaviour
 {
 	// tudo entre {} faz parte do conteúdo da classe
 
-	public string mensagem; // quando a variavel aparece no inspector, não precisa
-							// ter valor inicial
+	// quando a variavel aparece no inspector,
+	// não precisa ter valor inicial
+	public string mensagem;
 
 	public void MinhaFuncao() // cria uma função (mais detalhes adiante)
 	{
@@ -182,7 +188,8 @@ public class MeuScript : MonoBehaviour // cria uma classe (mais detalhes adiante
 
 		int meuNumero = 10; // cria uma variável. ela pode ser usada daqui em diante
 
-		if(meuNumero > 0) // testa uma condição e bifurca o fluxo de execução
+		// testa uma condição e bifurca o fluxo de execução
+		if(meuNumero > 0) 
 		{
 			// executa tudo entre {} caso a condição seja verdadeira (true)
 
@@ -197,7 +204,9 @@ public class MeuScript : MonoBehaviour // cria uma classe (mais detalhes adiante
 
 		while(meuNumero < 100) // *repete* tudo entre {} enquando a condição for verdadeira
 		{
-			Debug.Log("contando até cem: " + meuNumero); // misturando string com int, int é convertido em texto
+			// misturando string com int,
+			// int é convertido em texto
+			Debug.Log("contando até cem: " + meuNumero);
 			meuNumero += 1; // shorthand para 'meuNumero = meuNumero + 1'
 		}
 	}
@@ -209,32 +218,36 @@ Vamos aplicar tudo já visto até agora:
 ```csharp
 public class MeuScript : MonoBehaviour
 {
-	public KeyCode rightKey = KeyCode.RightArrow; // KeyCode representa uma tecla ou botão
+	// KeyCode representa uma tecla ou botão
+	public KeyCode rightKey = KeyCode.RightArrow;
 	public KeyCode leftKey = KeyCode.LeftArrow;
-	public float velocity = 5.0f; // velocidade em metros/segundo
+	// velocidade em metros/segundo
+	public float velocity = 5.0f;
 
 	private void Update()
 	{
-		float delta = velocity * Time.deltaTime; // transforma velocidade em distância
-												 // percorrida em um intervalo de tempo;
-												 // Time.deltaTime é quanto tempo se passou
-												 // desde o último frame em segundos
+		// transforma velocidade em distância percorrida em um intervalo de tempo
+		// 'Time.deltaTime' é quanto tempo se passou desde o último frame em segundos
+		float delta = velocity * Time.deltaTime;
+
+		if(Input.GetKeyDown(rightKey))
+		{
+			// Na Unity, 'transform' é uma referência pro Transform onde
+			// esse script está
+			transform.position += new Vector3(delta, 0.0f, 0.0f);
+		}
 
 		if(Input.GetKeyDown(leftKey))
 		{
 			// Na Unity, a esquerda fica na parte negativa do eixo X
 			transform.position -= new Vector3(delta, 0.0f, 0.0f);
 		}
-
-		if(Input.GetKeyDown(rightKey))
-		{
-			transform.position += new Vector3(delta, 0.0f, 0.0f);
-		}
 	}
 }
 ```
 Ponha esse script em um GameObject que contenha um renderer para vê-lo se mover para os lados usando
-as setas do teclado.
+as setas do teclado. É possível também alterar no inspector não apenas as teclas que fazem mover o objeto,
+como também a velocidade com que ele move.
 
 
 ----
