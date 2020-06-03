@@ -1,4 +1,6 @@
 O básico que permitirá você fazer uns scripts simples sem depender do programador pé-no-saco.
+Tenham em mente que ainda assim é bastante conteúdo condensado e, por isso, cada comentário tem
+informação importante!
 
 # Setup
 Esse guia focará num ambiente [Unity](https://unity.com/) (tenha ao menos uma versão instalada).
@@ -55,10 +57,12 @@ Ignorando por hora as estruturas extras no script, podemos reparar em algumas co
 - a execução do código é linear e segue de cima para baixo!!
 
 ```
-1. Existem outros nomes importantes para a Unity. Podemos encontrá-los na documentação: https://docs.unity3d.com/ScriptReference/MonoBehaviour.html
+1. Existem outros nomes importantes para a Unity. Podemos encontrá-los na documentação:
+https://docs.unity3d.com/ScriptReference/MonoBehaviour.html
+Um exemplo é 'Update' que executa um trecho de código *todo* frame.
 ```
 
-# Variaveis
+# Variáveis
 Faça a seguinte mudança no script anterior:
 ```csharp
 using UnityEngine;
@@ -81,19 +85,157 @@ Ao executar o código, vemos que as mensagens continuam a mesma apesar do códig
 A estrutura padrão pra declarar variáveis é `<tipo> <nome> = <valor>`. No nosso caso, as
 mensagens têm tipo `string` que significa "essas variáveis apenas podem conter valores do tipo texto". (2)
 
+Após declarada, podemos usar a variável à vontade e será como se tivéssemos escrito diretamente o valor
+que ela contém. Porém, variáveis existem para que possamos fazer operações com seus valores. Exemplo:
+```csharp
+// código omitido
+private void Start()
+{
+	string mensagem1 = "VIVE NO ABACAXI";
+	string mensagem2 = "E MORA NO MAR";
+	string tudoJunto = mensagem1 + " " + mensagem2;
+	Debug.Log(tudoJunto);
+}
+```
+Agora criamos uma terceira variável (`tudoJunto`) que contém os valores concatenados de `mensagem1` e `mensagem2`.
+Ai quando chamamos `Debug.Log` com `tudoJunto`, o que irá aparecer é o resultado da operação.
+
+O potencial disso é que podemos criar códigos cujo comportamento se adapta com base nos valores de suas variáveis. (3)
+
+## Unity Inspector
+Se mudarmos mais um pouco o exemplo para:
+```csharp
+using UnityEngine;
+
+public class MeuScript : MonoBehaviour
+{
+	// agora as variáveis estão fora do 'Start'
+	public string mensagem1 = "VIVE NO ABACAXI";
+	public string mensagem2 = "E MORA NO MAR";
+
+	private void Start()
+	{
+		Debug.Log(mensagem1);
+		Debug.Log(mensagem2);
+	}
+}
+```
+As variaveis agora aparecem no inspector da Unity. Isso nos permite mudar seus valores *antes* da execução do programa.
+É como se tivéssemos escrito o programa com aqueles valores porém sem precisar tocar no código ou recompilar! Você pode
+reparar que na hora de executar, ele ignora o valor inicial escrito no código e usa o que foi inserido no inspector.
+
+## Exemplo Outros Tipos
+```csharp
+// código omitido
+private void Start()
+{
+	int meuNumero = 10 + 2; // variáveis podem ser criadas a partir de expressões
+	Debug.Log(meuNumero); // 12
+
+	float metade = meuNumero * 0.5f; // se misturar float com int, o int é convertido pra float (cuidado!)
+									 // o 'f' em '0.5f' serve pra indicar que esse literal é um número float
+	Debug.Log(metade); // 6.0
+
+	bool numeroEhGrande = meuNumero > 10; // 'true' caso meuNumero seja maior que 10, 'false' caso contrário
+	Debug.Log(numeroEhGrande); // true
+
+	Vector3 position = new Vector3(0.0f, meuNumero, metade + 4.0f); // um dos tipos que existem na Unity,
+																	// representa um ponto no espaço 3d
+	Debug.Log(position); // Vector3(0.0, 12.0, 10.0)
+}
+```
+
 ```
 2. Outros tipos:
 	- int = numeros inteiros
 	- float = numeros com casas decimais
 	- bool = 'true' ou 'false', valores lógicos, "sim"/"não", "ligado"/"desligado"
 	- e mais! Qualquer um pode definir tipos extras (a Unity define vários por sinal)
+
+3. Isso é a base e todo o propósito de programação em geral e irá ficar mais claro adiante!
 ```
 
+# Sintaxe
+É o que define a estrutura visual de uma linguagem de programação. São regras que devemos seguir ao escrever códigos
+para que eles sejam corretamente interpretados pelo computador. Cada linguagem de programação tem sua própria
+sintaxe. Todas diferentes, porém semelhantes o suficiente para que possamos aplicar conceitos de uma linguagem para outra.
+
+Exemplos de C#:
+```
+public class MeuScript : MonoBehaviour // cria uma classe (mais detalhes adiante)
+									   // ': MonoBehaviour' significa que esse script é
+									   // também um componente da Unity
+{
+	// tudo entre {} faz parte do conteúdo da classe
+
+	public string mensagem; // quando a variavel aparece no inspector, não precisa
+							// ter valor inicial
+
+	public void MinhaFuncao() // cria uma função (mais detalhes adiante)
+	{
+		Debug.Log(mensagem); // linhas de execução (statements) terminam com ';'
+	}
+
+	public void OutraFuncao()
+	{
+		// tudo entre {} faz parte do conteúdo da função
+
+		int meuNumero = 10; // cria uma variável. ela pode ser usada daqui em diante
+
+		if(meuNumero > 0) // testa uma condição e bifurca o fluxo de execução
+		{
+			// executa tudo entre {} caso a condição seja verdadeira (true)
+
+			meuNumero = meuNumero - 1; // é possível alterar uma variável depois de criada
+		}
+		else
+		{
+			// executa tudo entre {} caso a condição seja false (false)
+
+			MinhaFuncao(); // podemos executar uma outra função
+		}
+
+		while(meuNumero < 100) // *repete* tudo entre {} enquando a condição for verdadeira
+		{
+			Debug.Log("contando até cem: " + meuNumero); // misturando string com int, int é convertido em texto
+			meuNumero += 1; // shorthand para 'meuNumero = meuNumero + 1'
+		}
+	}
+}
+```
+
+# Fluxo
+Vamos aplicar tudo já visto até agora:
+```csharp
+public class MeuScript : MonoBehaviour
+{
+	public KeyCode rightKey = KeyCode.RightArrow; // KeyCode representa uma tecla ou botão
+	public KeyCode leftKey = KeyCode.LeftArrow;
+	public float velocity = 5.0f; // velocidade em metros/segundo
+
+	private void Update()
+	{
+		float delta = velocity * Time.deltaTime; // transforma velocidade em distância
+												 // percorrida em um intervalo de tempo;
+												 // Time.deltaTime é quanto tempo se passou
+												 // desde o último frame em segundos
+
+		if(Input.GetKeyDown(leftKey))
+		{
+			// Na Unity, a esquerda fica na parte negativa do eixo X
+			transform.position -= new Vector3(delta, 0.0f, 0.0f);
+		}
+
+		if(Input.GetKeyDown(rightKey))
+		{
+			transform.position += new Vector3(delta, 0.0f, 0.0f);
+		}
+	}
+}
+```
+Ponha esse script em um GameObject que contenha um renderer para vê-lo se mover para os lados usando
+as setas do teclado.
+
+
 ----
-variaveis => guardar valores pra mais tarde
-- rapido devaneio sobre tipos?
-fluxo
-Update()
-if input => Input.GetKeyDown()
-variaveis publicas => inspector
 docs Unity
