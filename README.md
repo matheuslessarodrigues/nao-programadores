@@ -166,7 +166,7 @@ para que eles sejam corretamente interpretados pelo computador. Cada linguagem d
 sintaxe. Todas diferentes, porém semelhantes o suficiente para que possamos aplicar conceitos de uma linguagem para outra.
 
 Exemplos de C#:
-```
+```csharp
 // cria uma classe (mais detalhes adiante)
 // ': MonoBehaviour' significa que esse script é também um componente da Unity
 public class MeuScript : MonoBehaviour
