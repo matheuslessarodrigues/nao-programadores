@@ -248,9 +248,109 @@ public class MeuScript : MonoBehaviour
 }
 ```
 Ponha esse script em um GameObject que contenha um renderer para vê-lo se mover para os lados usando
-as setas do teclado. É possível também alterar no inspector não apenas as teclas que fazem mover o objeto,
+as setas do teclado. No inspector, será possível também alterar não apenas as teclas que fazem mover o objeto,
 como também a velocidade com que ele move.
 
+# Se Aprofundando
+Como que na prática aplicamos esse básico e resolvemos problemas com programaçào.
 
-----
-docs Unity
+## Funções
+Duas ideias estão por trás do conceito de funções são:
+- organização: isolar clusters de linhas e dando um nome para eles
+- reutilização: trechos que se repetem (mesmo que com pequenas variações)
+
+### Parâmetros
+Um código qualquer pode interagir com uma função por tanto passar valores para ela, como também
+receber de volta valores gerados por ela.
+
+Exemplo:
+```csharp
+private int Incrementa(int valor)
+{
+	valor += 1;
+
+	// 'return' é como uma função passa um valor
+	// gerado por ela pro código que a chamou
+	return valor;
+}
+
+private void Start()
+{
+	var meuNumeroEspecial = Incrementa(10);
+	Debug.Log(meuNumeroEspecial); // 11
+
+	// não tem problema essa variável ter o mesmo nome
+	// pois ela está em uma função diferente
+	var valor = 4;
+	var resultado = Incrementa(valor);
+	Debug.Log(resultado); // 5
+
+	// quando um valor é passado para uma função,
+	// ele é copiado e então a função pode altera-los
+	// à vontade sem se preocupar com o código que a chamou
+	var maisUm = Incrementa(valor);
+	Debug.Log(maisUm); // 5
+	Debug.Log(valor); // 4
+}
+```
+
+Considere esse trecho que tem por objetivo testar se o player está suficientemente perto de cada
+inimigo e, caso positivo, inflingir dano no player com base no ataque de cada um ao mesmo tempo que
+também mostrar no console quanto de dano tomou:
+```csharp
+// código omitido
+private void Update()
+{
+	float distanciaAteInimigoChao = Vector3.Distance(player.transform.position, inimigoChao.transform.position);
+	if(distanciaAteInimigoChao < 1.0f)
+	{
+		player.health -= inimigoChao.attack;
+		Debug.Log("levou " + inimigoChao.attack + " de dano");
+	}
+
+	float distanciaAteInimigoVoador = Vector3.Distance(player.transform.position, inimigoVoador.transform.position)
+	if(distanciaAteInimigoVoador < 1.0f)
+	{
+		player.health -= inimigoVoador.attack;
+		Debug.Log("levou " + inimigoVoador.attack + " de dano");
+	}
+
+	float distanciaAteInimigoAgua = Vector3.Distance(player.transform.position, inimigoAgua.transform.position);
+	if(distanciaAteInimigoAgua < 1.0f)
+	{
+		player.health -= inimigoAgua.attack;
+		Debug.Log("levou " + inimigoAgua.attack + " de dano");
+	}
+}
+```
+
+Repare como a forma do código se repete para cada inimigo apenas alterando de qual inimigo estamos tratando.
+Vamos refatorar para usar função para tanto lidar com a repetição como também organizar para darmos um nome
+pro trecho de código com base no que ele faz:
+```csharp
+// código omitido
+
+// repare que, como a única coisa que mudava no trecho que era repetido era o inimigo,
+// será necessário passá-lo como parâmetro.
+private void TomarDanoCasoMuitoPerto(Inimigo inimigo)
+{
+	float distanciaAteInimigo = Vector3.Distance(player.transform.position, inimigo.transform.position);
+	if(distanciaAteInimigo < 1.0f)
+	{
+		player.health -= inimigo.attack;
+		Debug.Log("levou " + inimigo.attack + " de dano");
+	}
+}
+
+private void Update()
+{
+	TomarDanoCasoMuitoPerto(inimigoChao);
+	TomarDanoCasoMuitoPerto(inimigoVoador);
+	TomarDanoCasoMuitoPerto(inimigoAgua);
+}
+```
+Com isso conseguimos juntar toda a lógica de levar dano em um lugar apenas.
+Caso outros inimigos sejam criados, nós apenas realizamos mais uma chamada da função dentro de `Update`.
+Caso seja necessário alterar a lógica do player levando dano, precisaremos apenas alterar as linhas dentro
+de `TomarDanoCasoMuitoPerto` e apenas uma única vez.
+
