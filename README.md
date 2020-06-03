@@ -224,6 +224,8 @@ public class MeuScript : MonoBehaviour
 	// velocidade em metros/segundo
 	public float velocity = 5.0f;
 
+	// como queremos verificar a todo momento quando o jogador
+	// pressionou um botão, nosso código fica no 'Update'
 	private void Update()
 	{
 		// transforma velocidade em distância percorrida em um intervalo de tempo
@@ -232,14 +234,14 @@ public class MeuScript : MonoBehaviour
 
 		if(Input.GetKeyDown(rightKey))
 		{
-			// Na Unity, 'transform' é uma referência pro Transform onde
+			// na Unity, 'transform' é uma referência pro Transform onde
 			// esse script está
 			transform.position += new Vector3(delta, 0.0f, 0.0f);
 		}
 
 		if(Input.GetKeyDown(leftKey))
 		{
-			// Na Unity, a esquerda fica na parte negativa do eixo X
+			// na Unity, a esquerda fica na parte negativa do eixo X
 			transform.position -= new Vector3(delta, 0.0f, 0.0f);
 		}
 	}
