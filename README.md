@@ -294,32 +294,41 @@ private void Start()
 }
 ```
 
-Considere esse trecho que tem por objetivo testar se o player está suficientemente perto de cada
-inimigo e, caso positivo, inflingir dano no player com base no ataque de cada um ao mesmo tempo que
-também mostrar no console quanto de dano tomou:
+### Refatorando
+
+Considere esse trecho que tem por objetivo testar duas condições para cada inimigo:
+- se o player está suficientemente perto
+- uma chance de sucesso
+
+E que, caso ambas sejam positivas, inflinge dano no player com base no ataque de cada um e, por fim,
+também mostra no console quanto de dano que tomou:
 ```csharp
 // código omitido
 private void Update()
 {
 	float distanciaAteInimigoChao = Vector3.Distance(player.transform.position, inimigoChao.transform.position);
-	if(distanciaAteInimigoChao < 1.0f)
+	bool sucessoInimigoChao = Random.value > inimigoChao.sorte;
+	// '&&' indica que só entramos no 'if' caso ambas as condições sejam verdadeiras
+	if(distanciaAteInimigoChao < 1.0f && sucessoInimigoChao)
 	{
-		player.health -= inimigoChao.attack;
-		Debug.Log("levou " + inimigoChao.attack + " de dano");
+		player.health -= inimigoChao.ataque;
+		Debug.Log("levou " + inimigoChao.ataque + " de dano");
 	}
 
 	float distanciaAteInimigoVoador = Vector3.Distance(player.transform.position, inimigoVoador.transform.position)
-	if(distanciaAteInimigoVoador < 1.0f)
+	bool sucessoInimigoVoador = Random.value > inimigoVoador.sorte;
+	if(distanciaAteInimigoVoador < 1.0f && sucessoInimigoVoador)
 	{
-		player.health -= inimigoVoador.attack;
-		Debug.Log("levou " + inimigoVoador.attack + " de dano");
+		player.health -= inimigoVoador.ataque;
+		Debug.Log("levou " + inimigoVoador.ataque + " de dano");
 	}
 
 	float distanciaAteInimigoAgua = Vector3.Distance(player.transform.position, inimigoAgua.transform.position);
-	if(distanciaAteInimigoAgua < 1.0f)
+	bool sucessoInimigoAgua = Random.value > inimigoAgua.sorte;
+	if(distanciaAteInimigoAgua < 1.0f && sucessoInimigoAgua)
 	{
-		player.health -= inimigoAgua.attack;
-		Debug.Log("levou " + inimigoAgua.attack + " de dano");
+		player.health -= inimigoAgua.ataque;
+		Debug.Log("levou " + inimigoAgua.ataque + " de dano");
 	}
 }
 ```
@@ -335,10 +344,11 @@ pro trecho de código com base no que ele faz:
 private void TomarDanoCasoMuitoPerto(Inimigo inimigo)
 {
 	float distanciaAteInimigo = Vector3.Distance(player.transform.position, inimigo.transform.position);
-	if(distanciaAteInimigo < 1.0f)
+	bool sucessoInimigo = Random.value > inimigo.sorte;
+	if(distanciaAteInimigo < 1.0f && sucessoInimigo)
 	{
-		player.health -= inimigo.attack;
-		Debug.Log("levou " + inimigo.attack + " de dano");
+		player.health -= inimigo.ataque;
+		Debug.Log("levou " + inimigo.ataque + " de dano");
 	}
 }
 
@@ -353,4 +363,59 @@ Com isso conseguimos juntar toda a lógica de levar dano em um lugar apenas.
 Caso outros inimigos sejam criados, nós apenas realizamos mais uma chamada da função dentro de `Update`.
 Caso seja necessário alterar a lógica do player levando dano, precisaremos apenas alterar as linhas dentro
 de `TomarDanoCasoMuitoPerto` e apenas uma única vez.
+
+Como e quando isolar trechos do programa em funções é algo que vem com o tempo. Porém, você pode
+considerar extrair uma função a partir de linhas que se repetem (ou muito parecidas como foi visto) ou
+quando você botaria um comentário descrevendo o que um conjunto de código faz.
+
+## Classes
+Voltando para a função `TomarDanoCasoMuitoPerto`, ela recebe um parâmetro chamado `inimigo` de tipo `Inimigo`.
+Porém, como o computador sabe que a variável `inimigo` possui um valor ('field'), por exemplo, chamado `ataque`?
+
+Isso vem da definição de `Inimigo`! Em algum outro lugar, alguém definiu `Inimigo` como algo, digamos, assim:
+```csharp
+using UnityEngine;
+
+// 'Inimigo' também pode ser adicionado a um GameObject
+public class Inimigo : MonoBehaviour
+{
+	public float ataque = 10;
+	public float sorte = 0.8f;
+}
+```
+Esse trecho indica ao computador que toda vez que aparecer uma variável do tipo `Inimigo`, ela irá
+possuir os campos `ataque` e `sorte` disponíveis para uso. Você pode imaginar campos como sendo "sub-variáveis",
+ou então "variáveis dentro de variáveis".
+
+Exemplo do que é possível fazer definindo nossas classes:
+```csharp
+public class MeuScript : MonoBehaviour
+{
+	// nosso script tem referencias para componentes
+	// do tipo 'Inimigo' em algum GameObject
+	public Inimigo inimigoChao;
+	public Inimigo inimigoVoador;
+	public Inimigo inimigoAgua;
+
+	private void Start()
+	{
+		// vamo fazer uns balanceamentos:
+		inimigoChao.ataque = 100;
+		inimigoVoador.ataque = 50;
+
+		// repare que cada campo 'ataque' é independente
+		// para cada variável do tipo 'Inimigo'
+		Debug.Log(inimigoChao.ataque); // 100
+		Debug.Log(inimigoVoador.ataque); // 50
+	}
+}
+```
+
+*Classes são para dados o que funções são para códigos.*
+
+```
+Em outras linguagens, o que foi descrito aqui como 'Classe', lá é chamado de 'Estruturas' (struct),
+ou então a linguagem nem possui a formalidade de definir tipos e é tudo dinâmico (o que cada
+variável pode carregar tem o potencial de mudar a qualquer momento).
+```
 
